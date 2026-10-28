@@ -38,6 +38,6 @@ android {
 }
 
 dependencies {
-    arm64Implementation "org.mozilla.geckoview:geckoview-arm64-v8a:154.0.20260824154132"
-    armv7Implementation "org.mozilla.geckoview:geckoview-armeabi-v7a:154.0.20260824154132"
+    arm64Implementation "org.mozilla.geckoview:geckoview-arm64-v8a:149.0.20260403140140"
+    armv7Implementation "org.mozilla.geckoview:geckoview-armeabi-v7a:149.0.20260403140140"
 }
