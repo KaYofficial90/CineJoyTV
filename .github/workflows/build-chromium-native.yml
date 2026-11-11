@@ -1,0 +1,29 @@
+name: Build baseline Chromium for Android on large self-hosted runner
+on:
+  workflow_dispatch:
+  push:
+    branches: [multilogin-native-chromium]
+    paths:
+      - 'chromium-native/**'
+      - '.github/workflows/build-chromium-native.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: [self-hosted, linux, x64, chromium-large]
+    timeout-minutes: 720
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test profile identity configuration component
+        run: |
+          cmake -S chromium-native/native -B /tmp/mlnative
+          cmake --build /tmp/mlnative -j2
+          ctest --test-dir /tmp/mlnative --output-on-failure
+      - name: Compile unmodified Chromium for Android
+        run: WORKDIR="$RUNNER_TEMP/mlchromium" bash chromium-native/build-chromium-android.sh
+      - name: Upload baseline APK (NOT MULTILOGIN)
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-chromium-baseline-NOT-MultiLogin
+          path: ${{ runner.temp }}/mlchromium/apk-output/*.apk
+          if-no-files-found: error
