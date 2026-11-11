@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Restore Android source
         run: rm -rf app/src && base64 --decode multilogin-build/payload.txt | tar -xJf -
+      - name: Apply experimental per-profile identity upgrade
+        run: python3 multilogin-build/upgrade_identity.py
       - name: Install JDK 17
         uses: actions/setup-java@v4
         with:
